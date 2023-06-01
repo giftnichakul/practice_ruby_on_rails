@@ -1,0 +1,18 @@
+<h1>Detail of <%= @book.name%> 📔</h1>
+
+<p> Release date 🗓️: <%= @book.release%> </p>
+<p> Description 📁: <%= @book.description%> </p>
+
+
+<% if @book.reviews.any? %>
+  <p>Reviews 💭: </p>
+  <ul>
+    <% @book.reviews.each do |review|%>
+      <li><%= review.comment %></li>
+    <%end%>
+  </ul>
+<% else %>
+  <p>No Reviews 🤔</p>
+<%end%>
+
+<p> <a href= "<%= books_path %>">Go Back</a></p>
