@@ -15,4 +15,9 @@
   <p>No Reviews 🤔</p>
 <%end%>
 
-<p> <a href= "<%= books_path %>">Go Back</a></p>
+<p>
+  <a href= "<%= books_path %>">Go Back</a> |
+  <%= link_to "Delete", @book, method: :delete %>
+</p>
+
+
