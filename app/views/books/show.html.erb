@@ -8,7 +8,10 @@
   <p>Reviews 💭: </p>
   <ul>
     <% @book.reviews.each do |review|%>
-      <li><%= review.comment %>, <%= review.star%> stars</li>
+      <li>
+        <%= review.comment %>, <%= review.star%> stars
+        <%= link_to "edit", edit_book_review_path(book_id: @book.id, id: review.id)%>
+      </li>
     <%end%>
   </ul>
 <% else %>
