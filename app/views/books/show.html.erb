@@ -9,10 +9,10 @@
   <ul>
     <% @book.reviews.each do |review|%>
       <li><%= review.comment %></li>
-    <%end%>
+    <% end %>
   </ul>
 <% else %>
   <p>No Reviews 🤔</p>
-<%end%>
+<% end %>
 
 <p> <a href= "<%= books_path %>">Go Back</a></p>
