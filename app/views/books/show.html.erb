@@ -1,19 +1,18 @@
 <h1>Detail of <%= @book.name%> 📔</h1>
 
-<p> Release date 🗓️: <%= @book.release%> </p>
-<p> Description 📁: <%= @book.description%> </p>
-
+<p> Release date 🗓️: <%= @book.release %> </p>
+<p> Description 📁: <%= @book.description %> </p>
 
 <% if @book.reviews.any? %>
   <p>Reviews 💭: </p>
   <ul>
     <% @book.reviews.each do |review|%>
-      <li><%= review.comment %></li>
-    <%end%>
+      <li><%= review.comment %>, <%= review.star %> stars</li>
+    <% end %>
   </ul>
 <% else %>
   <p>No Reviews 🤔</p>
-<%end%>
+<% end %>
 
 <h2>Add a review 💬</h2>
 <%= form_with model: [ @book, @book.reviews.build ] do |form| %>
@@ -33,4 +32,8 @@
   </div>
 <% end %>
 
-<p> <a href= "<%= books_path %>">Go Back</a></p>
+<p>
+  <a href= "<%= books_path %>">Go Back</a> |
+  <a href="<%= edit_book_path(@book)%>">Edit a book</a> |
+  <%= button_to "Delete", book_path(@book), method: :delete %>
+</p>

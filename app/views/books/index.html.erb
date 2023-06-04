@@ -1,12 +1,13 @@
 <h1>List of books 📚</h1>
 
+<p><a href="<%= new_book_path %>">Create</a> a new book ?</p>
 <ul>
   <% @books.each do |book| %>
     <li>
-      <a href="<%= book_path(book) %>"><%= book.name%></a>
+      <a href="<%= book_path(book) %>"><%= book.name %></a>
       <%= book.reviews.any? ?
         + book.reviews.average('star').to_s + ' stars'
       : 'no reviews' %>
     </li>
-  <%end%>
+  <% end %>
 </ul>
