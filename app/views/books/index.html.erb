@@ -4,7 +4,7 @@
 <ul>
   <% @books.each do |book| %>
     <li>
-      <a href="<%= book_path(book) %>"><%= book.name%></a>
+      <a href="<%= book_path(book) %>"><%= book.name %></a>
       <%= book.reviews.any? ?
         + book.reviews.average('star').to_s + ' stars'
       : 'no reviews' %>
