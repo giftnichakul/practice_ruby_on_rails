@@ -14,5 +14,8 @@
   <p>No Reviews 🤔</p>
 <% end %>
 
-<p> <a href="<%= edit_book_path(@book)%>">Edit a book</a></p>
-<p> <a href= "<%= books_path %>">Go Back</a></p>
+<p>
+  <a href= "<%= books_path %>">Go Back</a> |
+  <a href="<%= edit_book_path(@book)%>">Edit a book</a> |
+  <%= button_to "Delete", book_path(@book), method: :delete %>
+</p>
