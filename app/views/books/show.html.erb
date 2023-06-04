@@ -1,8 +1,7 @@
-<h1>Detail of <%= @book.name%> 📔</h1>
+<h1>Detail of <%= @book.name %> 📔</h1>
 
-<p> Release date 🗓️: <%= @book.release%> </p>
-<p> Description 📁: <%= @book.description%> </p>
-
+<p> Release date 🗓️: <%= @book.release %> </p>
+<p> Description 📁: <%= @book.description %> </p>
 
 <% if @book.reviews.any? %>
   <p>Reviews 💭: </p>
@@ -12,10 +11,14 @@
         <%= review.comment %>, <%= review.star%> stars
         <%= button_to "delete", book_review_path(@book, review), method: :delete %>
       </li>
-    <%end%>
+    <% end %>
   </ul>
 <% else %>
   <p>No Reviews 🤔</p>
-<%end%>
+<% end %>
 
-<p> <a href= "<%= books_path %>">Go Back</a></p>
+<p>
+  <a href= "<%= books_path %>">Go Back</a> |
+  <a href="<%= edit_book_path(@book)%>">Edit a book</a> |
+  <%= button_to "Delete", book_path(@book), method: :delete %>
+</p>
