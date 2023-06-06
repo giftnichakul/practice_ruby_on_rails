@@ -7,11 +7,29 @@
   <p>Reviews 💭: </p>
   <ul>
     <% @book.reviews.each do |review|%>
-      <li><%= review.comment %>, <%= review.star%> stars</li>
+      <li><%= review.comment %>, <%= review.star %> stars</li>
     <% end %>
   </ul>
 <% else %>
   <p>No Reviews 🤔</p>
+<% end %>
+
+<h2>Add a review 💬</h2>
+<%= form_with model: [ @book, @book.reviews.build ] do |form| %>
+  <div>
+    <%= form.label :comment %><br>
+    <%= form.text_field :comment %>
+  </div>
+
+  <div>
+    <%= form.label :star %><br>
+    <%= form.number_field :star, step: :any %>
+  </div>
+
+  <br>
+  <div>
+    <%= form.submit %>
+  </div>
 <% end %>
 
 <p>
