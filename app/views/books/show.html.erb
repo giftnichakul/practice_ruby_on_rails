@@ -1,7 +1,7 @@
-<h1>Detail of <%= @book.name%> 📔</h1>
+<h1>Detail of <%= @book.name %> 📔</h1>
 
-<p> Release date 🗓️: <%= @book.release%> </p>
-<p> Description 📁: <%= @book.description%> </p>
+<p> Release date 🗓️: <%= @book.release %> </p>
+<p> Description 📁: <%= @book.description %> </p>
 
 
 <% if @book.reviews.any? %>
@@ -9,8 +9,9 @@
   <ul>
     <% @book.reviews.each do |review|%>
       <li>
-        <%= review.comment %>, <%= review.star%> stars
-        <%= link_to "edit", edit_book_review_path(book_id: @book.id, id: review.id)%>
+        <%= review.comment %>, <%= review.star %> stars
+        <%= link_to "edit", edit_book_review_path(book_id: @book.id, id: review.id) %>
+        <%= button_to "delete", book_review_path(@book, review), method: :delete %>
       </li>
     <%end%>
   </ul>
@@ -18,4 +19,26 @@
   <p>No Reviews 🤔</p>
 <% end %>
 
-<p> <a href= "<%= books_path %>">Go Back</a></p>
+<h2>Add a review 💬</h2>
+<%= form_with model: [ @book, @book.reviews.build ] do |form| %>
+  <div>
+    <%= form.label :comment %><br>
+    <%= form.text_field :comment %>
+  </div>
+
+  <div>
+    <%= form.label :star %><br>
+    <%= form.number_field :star, step: :any %>
+  </div>
+
+  <br>
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<p>
+  <a href= "<%= books_path %>">Go Back</a> |
+  <a href="<%= edit_book_path(@book) %>">Edit a book</a> |
+  <%= button_to "Delete", book_path(@book), method: :delete %>
+</p>
