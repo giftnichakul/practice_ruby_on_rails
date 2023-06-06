@@ -1,4 +1,4 @@
-<h1>Detail of <%= @book.name%> 📔</h1>
+<h1>Detail of <%= @book.name %> 📔</h1>
 
 <p> Release date 🗓️: <%= @book.release %> </p>
 <p> Description 📁: <%= @book.description %> </p>
@@ -7,7 +7,10 @@
   <p>Reviews 💭: </p>
   <ul>
     <% @book.reviews.each do |review|%>
-      <li><%= review.comment %>, <%= review.star %> stars</li>
+      <li>
+        <%= review.comment %>, <%= review.star%> stars
+        <%= button_to "delete", book_review_path(@book, review), method: :delete %>
+      </li>
     <% end %>
   </ul>
 <% else %>

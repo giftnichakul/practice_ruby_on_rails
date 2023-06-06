@@ -5,6 +5,15 @@ class ReviewsController < ApplicationController
     redirect_to book_path(@book)
   end
 
+  def destroy
+    @review = Review.find_by(id: params[:id], book_id: params[:book_id])
+    raise ActiveRecord::RecordNotFound if @review.blank?
+
+    @review.destroy
+
+    redirect_to book_path(params[:book_id])
+  end
+
   private
 
   def review_params
