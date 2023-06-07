@@ -2,9 +2,10 @@ class ReviewsController < ApplicationController
   before_action :set_book, only: %i[edit update]
 
   def create
-    @book = Book.find(params[:book_id])
-    @review = @book.reviews.create(review_params)
-    redirect_to book_path(@book)
+    # @book = Book.find(params[:book_id])
+    # @review = @book.reviews.create(review_params)
+    @review = Review.create(review_params)
+    redirect_to book_path(id: params[:book_id], error: @review.errors.full_messages)
   end
 
   def destroy
@@ -33,7 +34,8 @@ class ReviewsController < ApplicationController
   private
 
   def review_params
-    params.require(:review).permit(:comment, :star, :book_id)
+    params.require(:review).permit(:comment, :star).merge(book_id: params[:book_id])
+    # params.require(:review).permit(:comment, :star, :book_id)
   end
 
   def set_book

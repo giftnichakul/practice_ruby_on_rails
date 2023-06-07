@@ -17,7 +17,7 @@ class BooksController < ApplicationController
     if @book.save
       redirect_to @book
     else
-      render :new
+      redirect_to new_book_path(error: @book.errors.full_messages)
     end
   end
 
