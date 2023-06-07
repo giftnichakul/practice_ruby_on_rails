@@ -1,7 +1,9 @@
 <h1>Detail of <%= @book.name %> 📔</h1>
+<p>current user : <%= current_user.email %></p>
 
 <p> Release date 🗓️: <%= @book.release %> </p>
 <p> Description 📁: <%= @book.description %> </p>
+<p> Created by user 👤 : <%= @book.user.email %> </p>
 
 
 <% if @book.reviews.any? %>
