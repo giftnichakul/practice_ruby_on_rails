@@ -12,6 +12,7 @@
     <% @book.reviews.each do |review|%>
       <li>
         <%= review.comment %>, <%= review.star %> stars
+        created by <%= review.user.email %>
         <%= link_to "edit", edit_book_review_path(book_id: @book.id, id: review.id) %>
         <%= button_to "delete", book_review_path(@book, review), method: :delete %>
       </li>
