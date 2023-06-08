@@ -25,6 +25,7 @@ class BooksController < ApplicationController
   def edit; end
 
   def update
+    authorize @book
     if @book.update(book_params)
       redirect_to @book
     else
@@ -33,6 +34,7 @@ class BooksController < ApplicationController
   end
 
   def destroy
+    authorize @book
     @book.destroy
 
     redirect_to books_path, notice: 'Book was successfully delete.'

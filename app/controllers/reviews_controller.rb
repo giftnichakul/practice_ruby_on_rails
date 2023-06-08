@@ -9,6 +9,7 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
+    authorize @review
     @review = Review.find_by(id: params[:id], book_id: params[:book_id])
     raise ActiveRecord::RecordNotFound if @review.blank?
 
@@ -20,6 +21,7 @@ class ReviewsController < ApplicationController
   def edit; end
 
   def update
+    authorize @review
     if @review.update(review_params)
       redirect_to book_path(@book)
     else
