@@ -5,39 +5,52 @@ RSpec.describe ReviewsController, type: :controller do
     subject { post :create, params: }
 
     let(:book) { create(:book) }
-    let(:params) { { book_id: book.id, review: { comment: 'test review controller', star: 4 } } }
+    let(:params) do
+      {
+        book_id: book.id,
+        review: { comment: 'test review controller', star: 4 }
+      }
+    end
 
     it 'creates review success' do
       expect(subject.status).to eq(302)
       expect(Review.count).to eq(1)
-
-      # test value of each attributes
-      created_review = assigns(:review)
-      expect(Review.find(created_review.id).comment).to eq('test review controller')
-      expect(Review.find(created_review.id).star).to eq(4)
-      expect(Review.find(created_review.id).book).to eq(book)
-
-      # redirect to show page
-      expect(subject).to redirect_to(book_path(created_review.book))
     end
 
-    context 'validation' do
-      let(:params) { { book_id: book.id, review: { comment: '' } } }
+    it 'saves value to database' do
+      subject
+      created_review = Review.find(assigns(:review).id)
+      expect(created_review.comment).to eq('test review controller')
+      expect(created_review.star).to eq(4)
+      expect(created_review.book).to eq(book)
+    end
+
+    it 'redirect to show book path' do
+      subject
+      expect(subject).to redirect_to(book_path(assigns(:review).book))
+    end
+
+    context 'validation for comment' do
+      let(:book) { create(:book) }
+      let(:params) { { book_id: book.id, review: { comment: '', star: 4} } }
 
       it 'requires comment' do
-        # subject
         expect(subject.status).to eq(302)
         expect(assigns(:review)).not_to be_valid
         expect(Review.count).to eq(0)
+        expect(subject).to redirect_to(book_path(id: assigns(:review).book_id, error: ["Comment can't be blank"]))
       end
+    end
 
-      let(:params) { { book_id: book.id, review: { star: 6 } } }
+    context 'validation for star' do
+      let(:book) { create(:book) }
+      let(:params) { { book_id: book.id, review: { comment: 'star is not in range', star: 6 } } }
 
       it 'star must be in range 0 to 5' do
-        # subject
         expect(subject.status).to eq(302)
         expect(assigns(:review)).not_to be_valid
         expect(Review.count).to eq(0)
+        expect(subject).to redirect_to(book_path(id: assigns(:review).book_id, error: ["Star must be in 0..5"]))
       end
     end
   end
@@ -58,19 +71,28 @@ RSpec.describe ReviewsController, type: :controller do
     subject { put :update, params: }
 
     let(:review) { create(:review) }
-    let(:params) { { id: review.id, book_id: review.book, review: { comment: 'test update', star: 4.5 } } }
+    let(:params) do
+      {
+        id: review.id,
+        book_id: review.book,
+        review: { comment: 'test update', star: 4.5 }
+      }
+    end
 
     it 'updates the review successful' do
       expect(subject.status).to eq(302)
+    end
 
-      # test value of each attributes
-      updated_review = assigns(:review)
-      expect(Review.find(updated_review.id).comment).to eq('test update')
-      expect(Review.find(updated_review.id).star).to eq(4.5)
-      expect(Review.find(updated_review.id).book).to eq(review.book)
+    it 'updates value in database' do
+      subject
+      updated_review = Review.find(assigns(:review).id)
+      expect(updated_review.comment).to eq('test update')
+      expect(updated_review.star).to eq(4.5)
+      expect(updated_review.book).to eq(review.book)
+    end
 
-      # redirect to show page
-      expect(subject).to redirect_to(book_path(updated_review.book_id))
+    it 'redirect to show page' do
+      expect(subject).to redirect_to(book_path(assigns(:review).book_id))
     end
 
     let(:invalid_comment) { { comment: '' } }
@@ -103,18 +125,6 @@ RSpec.describe ReviewsController, type: :controller do
       expect(response).to have_http_status(302)
 
       expect(response).to redirect_to(book_path(book_id))
-    end
-  end
-
-  describe 'private method' do
-    let!(:review) { create(:review) }
-
-    describe '#set_book' do
-      it 'return a book from review' do
-        controller.params[:book_id] = review.book.id
-        send_book = controller.send(:set_book)
-        expect(send_book).to eq(review.book)
-      end
     end
   end
 end

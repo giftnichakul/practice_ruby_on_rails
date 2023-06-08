@@ -7,7 +7,7 @@
 <% if @book.reviews.any? %>
   <p>Reviews 💭: </p>
   <ul>
-    <% @book.reviews.each do |review| %>
+    <% @book.reviews.each do |review|%>
       <li>
         <%= review.comment %>, <%= review.star %> stars
         <%= link_to "edit", edit_book_review_path(book_id: @book.id, id: review.id) %>
@@ -25,16 +25,23 @@
     <%= form.label :comment %><br>
     <%= form.text_field :comment %>
   </div>
-
   <div>
     <%= form.label :star %><br>
     <%= form.number_field :star, step: :any %>
   </div>
-
   <br>
   <div>
     <%= form.submit %>
   </div>
+  <br>
+  <% if params[:error] %>
+    <div> Got error </div>
+    <ul>
+      <% params[:error].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  <% end %>
 <% end %>
 
 <p>

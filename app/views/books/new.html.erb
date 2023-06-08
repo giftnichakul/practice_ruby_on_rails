@@ -18,6 +18,16 @@
   <div>
     <%= form.submit %>
   </div>
+
+  <br>
+  <% if params[:error] %>
+    <div> Got error </div>
+    <ul>
+      <% params[:error].each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  <% end %>
 <% end %>
 
 <p> <a href= "<%= books_path %>">Go Back</a></p>
