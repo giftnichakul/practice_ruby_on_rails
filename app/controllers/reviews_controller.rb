@@ -1,5 +1,6 @@
 class ReviewsController < ApplicationController
   before_action :set_book, only: %i[edit update]
+  before_action :set_review, only: %i[edit update]
   before_action :authenticate_user!
 
   def create
