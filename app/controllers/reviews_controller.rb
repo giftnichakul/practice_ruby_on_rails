@@ -9,9 +9,10 @@ class ReviewsController < ApplicationController
   end
 
   def destroy
-    authorize @review
     @review = Review.find_by(id: params[:id], book_id: params[:book_id])
     raise ActiveRecord::RecordNotFound if @review.blank?
+
+    authorize @review
 
     @review.destroy
 
