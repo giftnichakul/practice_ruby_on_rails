@@ -25,17 +25,14 @@
     <%= form.label :comment %><br>
     <%= form.text_field :comment %>
   </div>
-
   <div>
     <%= form.label :star %><br>
     <%= form.number_field :star, step: :any %>
   </div>
-
   <br>
-    <div>
+  <div>
     <%= form.submit %>
   </div>
-
   <br>
   <% if params[:error] %>
     <div> Got error </div>
