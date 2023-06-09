@@ -1,6 +1,5 @@
 class BooksController < ApplicationController
   before_action :set_book, only: %i[show edit update destroy]
-  before_action :authenticate_user!
 
   def index
     @books = Book.page(params[:page])
@@ -15,7 +14,7 @@ class BooksController < ApplicationController
   end
 
   def create
-    @book = current_user.books.build(book_params)
+    @book = current_user.books.new(book_params)
 
     if @book.save
       redirect_to @book

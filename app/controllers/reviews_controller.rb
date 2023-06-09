@@ -1,10 +1,9 @@
 class ReviewsController < ApplicationController
   before_action :set_book, only: %i[edit update]
   before_action :set_review, only: %i[edit update]
-  before_action :authenticate_user!
 
   def create
-    @review = current_user.reviews.create(review_params)
+    @review = Review.create(review_params)
     redirect_to book_path(id: params[:book_id], error: @review.errors.full_messages)
   end
 
@@ -33,7 +32,7 @@ class ReviewsController < ApplicationController
   private
 
   def review_params
-    params.require(:review).permit(:comment, :star).merge(book_id: params[:book_id])
+    params.require(:review).permit(:comment, :star).merge(book_id: params[:book_id], user: current_user)
   end
 
   def set_book
