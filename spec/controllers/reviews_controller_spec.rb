@@ -95,36 +95,41 @@ RSpec.describe ReviewsController, type: :controller do
       expect(subject).to redirect_to(book_path(assigns(:review).book_id))
     end
 
-    let(:invalid_comment) { { comment: '' } }
+    context 'when update invalid parameter' do
+      let(:invalid_comment) { { comment: '' } }
+      let(:invalid_star) { { star: -1 } }
+      let(:params) { { id: review.id, book_id: review.book, review: invalid_comment} }
 
-    it 'renders the edit page for invalid comment' do
-      put :update, params: { id: review.id, book_id: review.book, review: invalid_comment }
+      it 'render the edit page for invalid comment' do
+        expect(subject.status).to eq(200)
+        expect(subject).to render_template(:edit)
+        expect(review.comment).not_to eq('')
+      end
 
-      expect(response).to have_http_status(200)
-      expect(response).to render_template(:edit)
-      expect(review.comment).not_to eq('')
-    end
+      let(:params) { { id: review.id, book_id: review.book, review: invalid_star} }
 
-    let(:invalid_star) { { star: -1 } }
-
-    it 'renders the edit page for invalid star' do
-      put :update, params: { id: review.id, book_id: review.book, review: invalid_star }
-
-      expect(response).to have_http_status(200)
-      expect(response).to render_template(:edit)
-      expect(review.star).not_to eq(-1)
+      it 'renders the edit page for invalid star' do
+        expect(subject.status).to eq(200)
+        expect(subject).to render_template(:edit)
+        expect(review.star).not_to eq(-1)
+      end
     end
   end
 
   describe 'DELETE /destroy' do
+    subject { delete :destroy, params: }
     let!(:review) { create(:review) }
-    let!(:book_id) { review.book }
+    let(:params) do
+      {
+        id: review.id,
+        book_id: review.book
+      }
+    end
 
     it 'deletes the review' do
-      expect { delete :destroy, params: { id: review.id, book_id: review.book } }.to change(Review, :count).by(-1)
-      expect(response).to have_http_status(302)
-
-      expect(response).to redirect_to(book_path(book_id))
+      expect(subject.status).to eq(302)
+      expect(Review.count).to eq(0)
+      expect(subject).to redirect_to(book_path(review.book))
     end
   end
 end

@@ -73,7 +73,7 @@ RSpec.describe BooksController, type: :controller do
       expect(subject).to redirect_to(book_path(assigns(:book).id))
     end
 
-    context 'validation' do
+    context 'when create with invalid parameter' do
       let(:params) { { book: { name: '' } } }
 
       it 'requires name' do
@@ -105,14 +105,15 @@ RSpec.describe BooksController, type: :controller do
     subject { put :update, params: }
 
     let!(:book) { create(:book) }
-    let(:invalid_attributes) { { name: '', description: 'invalid name' } }
 
-    it 'renders the edit page for invalid attributes' do
-      put :update, params: { id: book.id, book: invalid_attributes }
+    context 'when updates with invalid paramter' do
+      let(:params) { { id: book.id, book: { name: '', description: 'invalid name' } } }
 
-      expect(response).to have_http_status(200)
-      expect(response).to render_template(:edit)
-      expect(book.description).not_to eq('invalid name')
+      it 'renders the edit page' do
+        expect(subject).to render_template(:edit)
+        expect(subject.status).to eq(200)
+        expect(book.description).not_to eq('invalid name')
+      end
     end
 
     let(:params) do
@@ -145,12 +146,14 @@ RSpec.describe BooksController, type: :controller do
   end
 
   describe 'DELETE /destroy' do
+    subject { delete :destroy, params: }
     let!(:book) { create(:book) }
+    let(:params) { { id: book.id } }
 
     it 'deletes the book' do
-      expect { delete :destroy, params: { id: book.id } }.to change(Book, :count).by(-1)
-      expect(response).to have_http_status(302)
-      expect(response).to redirect_to(books_path)
+      expect(subject.status).to eq(302)
+      expect(Book.count).to eq(0)
+      expect(subject).to redirect_to(books_path)
     end
   end
 end
