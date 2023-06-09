@@ -49,6 +49,7 @@ gem 'bootsnap', require: false
 # gem "image_processing", "~> 1.2"
 
 gem 'devise', '~> 4.9', '>= 4.9.2'
+gem 'kaminari', '~> 1.2', '>= 1.2.2'
 gem 'pundit', '~> 2.3'
 
 group :development, :test do

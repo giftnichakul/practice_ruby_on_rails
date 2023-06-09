@@ -9,11 +9,12 @@
 <% if @book.reviews.any? %>
   <p>Reviews 💭: </p>
   <ul>
-    <% @book.reviews.each do |review| %>
+    <%= paginate @reviews %>
+    <% @reviews.each do |review| %>
       <li>
         <%= review.comment %>, <%= review.star %> stars
         created by <%= review.user.email %>
-        <% if review && policy(review).update? %>
+        <% if policy(review).update? %>
           <%= link_to "edit", edit_book_review_path(book_id: @book.id, id: review.id) %>
         <% end %>
         <% if policy(review).destroy? %>

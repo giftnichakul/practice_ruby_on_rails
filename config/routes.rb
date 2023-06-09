@@ -8,4 +8,7 @@ Rails.application.routes.draw do
   resources :books do
     resources :reviews
   end
+
+  # resources :books, only: [:index]
+  # resources :reviews, only: [:index]
 end
