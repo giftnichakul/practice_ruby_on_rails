@@ -9,7 +9,8 @@
 <% if @book.reviews.any? %>
   <p>Reviews 💭: </p>
   <ul>
-    <% @book.reviews.each do |review| %>
+    <%= paginate @reviews %>
+    <% @reviews.each do |review| %>
       <li>
         <%= review.comment %>, <%= review.star %> stars
         created by <%= review.user.email %>

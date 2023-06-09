@@ -3,10 +3,12 @@ class BooksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @books = Book.all
+    @books = Book.page(params[:page])
   end
 
-  def show; end
+  def show
+    @reviews = @book.reviews.page(params[:page])
+  end
 
   def new
     @book = Book.new
