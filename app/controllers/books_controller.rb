@@ -3,11 +3,11 @@ class BooksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @books = Book.page(params[:page]).per(5)
+    @books = Book.page(params[:page])
   end
 
   def show
-    @reviews = @book.reviews.page(params[:page]).per(10)
+    @reviews = @book.reviews.page(params[:page])
   end
 
   def new
