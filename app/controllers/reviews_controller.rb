@@ -11,6 +11,8 @@ class ReviewsController < ApplicationController
     @review = Review.find_by(id: params[:id], book_id: params[:book_id])
     raise ActiveRecord::RecordNotFound if @review.blank?
 
+    authorize @review
+
     @review.destroy
 
     redirect_to book_path(params[:book_id])
@@ -19,6 +21,7 @@ class ReviewsController < ApplicationController
   def edit; end
 
   def update
+    authorize @review
     if @review.update(review_params)
       redirect_to book_path(@book)
     else
@@ -29,7 +32,7 @@ class ReviewsController < ApplicationController
   private
 
   def review_params
-    params.require(:review).permit(:comment, :star).merge(book_id: params[:book_id])
+    params.require(:review).permit(:comment, :star).merge(book_id: params[:book_id], user: current_user)
   end
 
   def set_book

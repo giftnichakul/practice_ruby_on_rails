@@ -1,17 +1,25 @@
 <h1>Detail of <%= @book.name %> 📔</h1>
+<p>current user : <%= current_user.email %></p>
 
 <p> Release date 🗓️: <%= @book.release %> </p>
 <p> Description 📁: <%= @book.description %> </p>
+<p> Created by user 👤 : <%= @book.user.email %> </p>
 
 
 <% if @book.reviews.any? %>
   <p>Reviews 💭: </p>
   <ul>
-    <% @book.reviews.each do |review|%>
+    <%= paginate @reviews %>
+    <% @reviews.each do |review| %>
       <li>
         <%= review.comment %>, <%= review.star %> stars
-        <%= link_to "edit", edit_book_review_path(book_id: @book.id, id: review.id) %>
-        <%= button_to "delete", book_review_path(@book, review), method: :delete %>
+        created by <%= review.user.email %>
+        <% if policy(review).update? %>
+          <%= link_to "edit", edit_book_review_path(book_id: @book.id, id: review.id) %>
+        <% end %>
+        <% if policy(review).destroy? %>
+          <%= button_to "delete", book_review_path(@book, review), method: :delete %>
+        <% end %>
       </li>
     <% end %>
   </ul>
@@ -45,7 +53,11 @@
 <% end %>
 
 <p>
-  <a href= "<%= books_path %>">Go Back</a> |
-  <a href="<%= edit_book_path(@book) %>">Edit a book</a> |
-  <%= button_to "Delete", book_path(@book), method: :delete %>
+  <a href= "<%= books_path %>">Go Back</a>
+  <% if policy(@book).update? %>
+    | <a href="<%= edit_book_path(@book) %>">Edit a book</a>
+  <% end %>
+  <% if policy(@book).destroy? %>
+    <%= button_to "Delete", book_path(@book), method: :delete %>
+  <% end %>
 </p>
