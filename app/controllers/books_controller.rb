@@ -3,10 +3,12 @@ class BooksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @books = Book.all
+    @books = Book.page(params[:page])
   end
 
-  def show; end
+  def show
+    @reviews = @book.reviews.page(params[:page])
+  end
 
   def new
     @book = Book.new
@@ -25,6 +27,7 @@ class BooksController < ApplicationController
   def edit; end
 
   def update
+    authorize @book
     if @book.update(book_params)
       redirect_to @book
     else
@@ -33,6 +36,7 @@ class BooksController < ApplicationController
   end
 
   def destroy
+    authorize @book
     @book.destroy
 
     redirect_to books_path, notice: 'Book was successfully delete.'
