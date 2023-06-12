@@ -55,6 +55,7 @@ RSpec.configure do |config|
   # The different available types are documented in the features, such as in
   # https://rspec.info/features/6-0/rspec-rails
   config.infer_spec_type_from_file_location!
+  config.include Devise::Test::ControllerHelpers, type: :controller
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
