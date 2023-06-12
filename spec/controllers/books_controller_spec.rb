@@ -2,22 +2,33 @@ require 'rails_helper'
 
 RSpec.describe BooksController, type: :controller do
   describe 'GET /index' do
-    subject { get :index, params: { page: 1 } }
+    subject { get :index, params: }
 
     context 'when user is signed in' do
       let(:user) { create(:user) }
       before { sign_in user }
 
-      it 'returns all books' do
-        book1 = create(:book)
-        book2 = create(:book)
+      let!(:books) { create_list(:book, 12) }
+      let(:params) { { page: 2 } }
 
+      it 'returns all books' do
+        subject
         expect(subject.status).to eq(200)
-        expect(assigns(:books)).to include(book1, book2)
+        expect(Book.count).to eq(12)
+        expect(books).to match_array(Book.all)
+      end
+
+      it 'paginates the reviews' do
+        subject
+        expect(assigns(:books).current_page).to eq(2)
+        expect(assigns(:books).limit_value).to eq(5)
+        expect(assigns(:books).total_pages).to eq(3)
       end
     end
 
     context 'when user not sign in' do
+      let(:params) { { page: 1 } }
+
       it 'redirect to log in page' do
         expect(subject.status).to eq(302)
         expect(subject).to redirect_to(new_user_session_path)
@@ -34,13 +45,21 @@ RSpec.describe BooksController, type: :controller do
       before { sign_in user }
 
       let(:book) { create(:book) }
-      let(:params) { { id: book.id } }
+      let!(:reviews) { create_list(:review, 15, book: book) }
+      let(:params) { { id: book.id , page: 2} }
 
       context 'when book exist' do
         it 'returns book' do
           expect(subject.status).to eq(200)
           expect(subject).to render_template(:show)
           expect(assigns(:book)).to eq(Book.find(book.id))
+        end
+
+        it 'paginates the reviews' do
+          subject
+          expect(assigns(:reviews).current_page).to eq(2)
+          expect(assigns(:reviews).limit_value).to eq(10)
+          expect(assigns(:reviews).total_pages).to eq(2)
         end
       end
 
