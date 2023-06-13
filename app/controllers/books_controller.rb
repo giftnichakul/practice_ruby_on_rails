@@ -2,12 +2,9 @@ class BooksController < ApplicationController
   before_action :set_book, only: %i[show edit update destroy]
 
   def index
-    # Rails.cache.clear
     books = Rails.cache.fetch('all_key_books', expires_in: 10.minute) do
       Book.all.to_a
     end
-
-    puts Rails.cache.redis.keys
 
     @books = Kaminari.paginate_array(books).page(params[:page]).per(5)
   end
