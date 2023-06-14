@@ -1,0 +1,11 @@
+<h1>Ranks of book each day 🏅 </h1>
+
+<ul>
+  <% @ranks.each do |rank| %>
+    <li>
+      <a href="<%= rank_path(rank) %>"><%= rank.date.strftime("%d %b %Y") %></a>
+    </li>
+  <% end %>
+</ul>
+
+<p> <a href= "<%= root_path %>">Go Back</a></p>

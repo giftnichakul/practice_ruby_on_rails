@@ -2,6 +2,8 @@
 <p>current user : <%= current_user.email %></p>
 
 <p><a href="<%= new_book_path %>">Create</a> a new book ?</p>
+<p> <a href= "<%= ranks_path %>">Rank</a> of books</p>
+
 <%= paginate @books %>
 <ul>
   <% @books.each do |book| %>

@@ -7,6 +7,8 @@ class BooksController < ApplicationController
 
   def show
     @reviews = @book.reviews.page(params[:page])
+    view = Rails.cache.fetch("views/#{@book.id}", expires_in: 2.day) { 0 }
+    Rails.cache.write("views/#{@book.id}", view + 1)
   end
 
   def new

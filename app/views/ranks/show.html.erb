@@ -1,0 +1,9 @@
+<h1>Ranks of book in <%= @rank.date.strftime("%d %b %Y")  %></h1>
+
+<ol>
+  <% @book_ranks.each do |book| %>
+    <div>🎊 Ranks <%= book.order_id %>: <%= book.book.name %> book has <%= book.view %> views</div>
+  <% end %>
+</ol>
+
+<p> <a href= "<%= ranks_path %>">Go Back</a></p>

@@ -1,0 +1,4 @@
+every_midenight:
+  cron: "0 0 * * *"
+  class: "WorkerJob"
+  queue: schedule
