@@ -2,10 +2,6 @@ class BooksController < ApplicationController
   before_action :set_book, only: %i[show edit update destroy]
 
   def index
-    books = Rails.cache.fetch('all_key_books', expires_in: 10.minute) do
-      Book.all.to_a
-    end
-
     @books = Kaminari.paginate_array(books).page(params[:page]).per(5)
   end
 
@@ -51,6 +47,12 @@ class BooksController < ApplicationController
   end
 
   private
+
+  def books
+    Rails.cache.fetch('all_key_books', expires_in: 10.minute) do
+      Book.all.to_a
+    end
+  end
 
   def set_book
     @book = Rails.cache.fetch("books/#{params[:id]}", expires_in: 10.minute) do

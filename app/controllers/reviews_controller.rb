@@ -39,9 +39,7 @@ class ReviewsController < ApplicationController
   end
 
   def set_book
-    @book = Rails.cache.fetch("books/#{params[:book_id]}") do
-      Book.find(params[:book_id])
-    end
+    @book = Book.find(params[:book_id])
   end
 
   def set_review
