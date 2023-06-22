@@ -22,6 +22,8 @@ class BooksController < ApplicationController
     @book = current_user.books.new(book_params)
 
     if @book.save
+      update_all_key
+      Rails.cache.write("books/#{params[:id]}", @book)
       redirect_to @book
     else
       redirect_to new_book_path(error: @book.errors.full_messages)
@@ -33,6 +35,7 @@ class BooksController < ApplicationController
   def update
     authorize @book
     if @book.update(book_params)
+      Rails.cache.write("books/#{params[:id]}", @book)
       redirect_to @book
     else
       render :edit
@@ -41,7 +44,9 @@ class BooksController < ApplicationController
 
   def destroy
     authorize @book
+    Rails.cache.delete("books/#{@book.id}")
     @book.destroy
+    update_all_key
     redirect_to books_path, notice: 'Book was successfully delete.'
   end
 
@@ -55,5 +60,9 @@ class BooksController < ApplicationController
 
   def book_params
     params.require(:book).permit(:name, :description, :release)
+  end
+
+  def update_all_key
+    Rails.cache.write('all_key_books', Book.all.to_a)
   end
 end
