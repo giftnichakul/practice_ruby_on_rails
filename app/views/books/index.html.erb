@@ -7,8 +7,8 @@
   <% @books.each do |book| %>
     <li>
       <a href="<%= book_path(book) %>"><%= book.name %></a>
-      <%= book.reviews.any? ?
-        + book.reviews.average('star').to_s + ' stars'
+      <%= book.cached_reviews.any? ?
+        + book.average_star.to_s + ' stars'
       : 'no reviews' %>
     </li>
   <% end %>
