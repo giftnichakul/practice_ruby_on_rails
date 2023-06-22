@@ -6,6 +6,6 @@ class RanksController < ApplicationController
 
   def show
     @rank = Rank.find(params[:id])
-    @book_ranks = BookRank.where(rank: params[:id])
+    @book_ranks = @rank.book_ranks
   end
 end
