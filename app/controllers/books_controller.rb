@@ -8,6 +8,8 @@ class BooksController < ApplicationController
   def show
     reviews = @book.cached_reviews
     @reviews = Kaminari.paginate_array(reviews).page(params[:page]).per(10)
+    view = Rails.cache.fetch("views/#{@book.id}", expires_in: 25.hours) { 0 }
+    Rails.cache.write("views/#{@book.id}", view + 1)
   end
 
   def new

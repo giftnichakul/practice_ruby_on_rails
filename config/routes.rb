@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   resources :books do
     resources :reviews
   end
+
+  resources :ranks, only: %i[index show]
 end
