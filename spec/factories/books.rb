@@ -3,5 +3,7 @@ FactoryBot.define do
     name { 'Book1' }
     description { 'This is factory book1' }
     release { '2020-01-01' }
+    association :user
+    # user { create(:user) }
   end
 end

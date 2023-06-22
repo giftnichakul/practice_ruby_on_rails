@@ -6,7 +6,7 @@
 <p> Created by user 👤 : <%= @book.user.email %> </p>
 
 
-<% if @book.reviews.any? %>
+<% if @book.cached_reviews.any? %>
   <p>Reviews 💭: </p>
   <ul>
     <%= paginate @reviews %>
